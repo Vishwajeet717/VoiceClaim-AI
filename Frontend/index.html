@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VoiceClaim AI</title>
+
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ======================================================
+         INTERACTIVE BACKGROUND
+         ====================================================== -->
+
+    <canvas id="backgroundCanvas"></canvas>
+
+
+    <!-- ======================================================
+         APP
+         ====================================================== -->
+
+    <main class="app">
+
+        <!-- ==================================================
+             TOP BAR
+             ================================================== -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-mark">
+                    VC
+                </div>
+
+                <div>
+
+                    <div class="brand-name">
+                        VoiceClaim AI
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Autonomous Insurance Claims Agent
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div
+                    id="connectionPill"
+                    class="status-pill offline"
+                >
+                    <span class="status-dot"></span>
+                    <span id="connectionText">
+                        Offline
+                    </span>
+                </div>
+
+
+                <div class="clock">
+                    <span id="clock">
+                        00:00
+                    </span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ==================================================
+             MAIN GRID
+             ================================================== -->
+
+        <section class="dashboard">
+
+            <!-- ==============================================
+                 LEFT / CENTER VOICE AREA
+                 ============================================== -->
+
+            <section class="voice-panel panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            LIVE CLAIM SESSION
+                        </div>
+
+                        <h1>
+                            VoiceClaim
+                        </h1>
+
+                    </div>
+
+
+                    <div
+                        id="agentStatus"
+                        class="agent-status"
+                    >
+                        Ready
+                    </div>
+
+                </div>
+
+
+                <!-- ORB -->
+
+                <div class="orb-area">
+
+                    <div
+                        id="voiceOrb"
+                        class="voice-orb"
+                    >
+
+                        <div class="orb-inner">
+
+                            <div class="orb-core">
+                                VC
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="voiceState"
+                        class="voice-state"
+                    >
+                        Ready to receive a claim
+                    </div>
+
+
+                    <div
+                        id="voiceHint"
+                        class="voice-hint"
+                    >
+                        Start a call to begin
+                    </div>
+
+                </div>
+
+
+                <!-- CONTROLS -->
+
+                <div class="voice-controls">
+
+                    <button
+                        id="startButton"
+                        class="primary-button"
+                    >
+                        <span class="button-icon">
+                            ●
+                        </span>
+
+                        Start Call
+                    </button>
+
+
+                    <button
+                        id="stopButton"
+                        class="secondary-button"
+                        disabled
+                    >
+                        End Call
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="errorBanner"
+                    class="error-banner hidden"
+                >
+                </div>
+
+            </section>
+
+
+            <!-- ==============================================
+                 CLAIM CONTEXT
+                 ============================================== -->
+
+            <aside class="context-panel panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            CLAIM CONTEXT
+                        </div>
+
+                        <h2>
+                            Live State
+                        </h2>
+
+                    </div>
+
+                    <div
+                        id="riskBadge"
+                        class="risk-badge"
+                    >
+                        --
+                    </div>
+
+                </div>
+
+
+                <div class="context-list">
+
+                    <div class="context-row">
+
+                        <span>
+                            Customer
+                        </span>
+
+                        <strong
+                            id="customerValue"
+                        >
+                            Not verified
+                        </strong>
+
+                    </div>
+
+
+                    <div class="context-row">
+
+                        <span>
+                            Policy
+                        </span>
+
+                        <strong
+                            id="policyValue"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="context-row">
+
+                        <span>
+                            Claim Type
+                        </span>
+
+                        <strong
+                            id="claimTypeValue"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="context-row">
+
+                        <span>
+                            Incident
+                        </span>
+
+                        <strong
+                            id="incidentValue"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="context-row">
+
+                        <span>
+                            Coverage
+                        </span>
+
+                        <strong
+                            id="coverageValue"
+                        >
+                            Pending
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="state-block">
+
+                    <div class="state-label">
+                        CURRENT INTENT
+                    </div>
+
+                    <div
+                        id="intentValue"
+                        class="state-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="state-block">
+
+                    <div class="state-label">
+                        CURRENT STEP
+                    </div>
+
+                    <div
+                        id="stepValue"
+                        class="state-value"
+                    >
+                        Ready
+                    </div>
+
+                </div>
+
+
+                <div class="state-block">
+
+                    <div class="state-label">
+                        SYSTEM ACTION
+                    </div>
+
+                    <div
+                        id="actionValue"
+                        class="state-value muted"
+                    >
+                        Waiting
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+
+        <!-- ==================================================
+             LOWER DASHBOARD
+             ================================================== -->
+
+        <section class="lower-grid">
+
+            <!-- ==================================================
+                 TRANSCRIPT
+                 ================================================== -->
+
+            <section class="transcript-panel panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            LIVE TRANSCRIPT
+                        </div>
+
+                        <h2>
+                            Conversation
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        id="messageCount"
+                        class="message-count"
+                    >
+                        0 messages
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="transcript"
+                    class="transcript"
+                >
+
+                    <div
+                        id="emptyTranscript"
+                        class="empty-transcript"
+                    >
+                        <div class="empty-icon">
+                            ◉
+                        </div>
+
+                        <div>
+                            No conversation yet
+                        </div>
+
+                        <small>
+                            Start a call to begin the claim interview.
+                        </small>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==================================================
+                 SYSTEM EVENTS
+                 ================================================== -->
+
+            <section class="events-panel panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            AGENT ACTIVITY
+                        </div>
+
+                        <h2>
+                            System Events
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="eventList"
+                    class="event-list"
+                >
+
+                    <div class="event-item muted-event">
+                        <span class="event-dot"></span>
+
+                        <span>
+                            System ready
+                        </span>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- ==================================================
+             FOOTER
+             ================================================== -->
+
+        <footer class="footer">
+
+            <span>
+                VoiceClaim AI
+            </span>
+
+            <span>
+                Safe Action Orchestration
+            </span>
+
+            <span>
+                Gemini + Supabase + LangGraph
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="./app.js"></script>
+
+</body>
+
+</html>
