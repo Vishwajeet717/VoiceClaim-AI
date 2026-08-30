@@ -1048,14 +1048,14 @@ function showError(
 
 function connectWebSocket() {
 
-    const BACKEND_URL =
-    "https://voiceclaim-ai-backend.onrender.com/";
+const BACKEND_URL =
+    "https://voiceclaim-ai-backend.onrender.com";
 
 const WS_URL =
-    BACKEND_URL
-        .replace("https://", "wss://")
-        .replace("http://", "ws://")
-        + "/ws/voice";
+    BACKEND_URL.replace(
+        "https://",
+        "wss://"
+    ) + "/ws/voice";
 
 websocket = new WebSocket(
     WS_URL
